@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "debug-utils",
+  "version": "${version}",
+  "name": "Debug Utils",
+  "description": "Adds many useful debugging tools to Minecraft.",
+  "authors": [
+    {
+      "name": "Crosby",
+      "contact": {
+        "discord": "https://discord.gg/3GxfGcAJBN"
+      }
+    }
+  ],
+  "contact": {
+    "sources": "https://github.com/RacoonDog/",
+    "issues": "https://github.com/RacoonDog//issues",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/",
+    "discord": "https://discord.gg/3GxfGcAJBN"
+  },
+  "license": "LGPL-2.1",
+  "icon": "assets/debug-utils/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "io.github.racoondog.debugutils.DebugUtils"
+    ]
+  },
+  "mixins": [
+    "debug-utils.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.13.0",
+    "fabric": "*",
+    "minecraft": "1.19.x",
+    "java": ">=17"
+  }
+}
