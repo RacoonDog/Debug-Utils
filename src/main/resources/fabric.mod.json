@@ -13,9 +13,9 @@
     }
   ],
   "contact": {
-    "sources": "https://github.com/RacoonDog/",
-    "issues": "https://github.com/RacoonDog//issues",
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/",
+    "sources": "https://github.com/RacoonDog/Debug-Utils",
+    "issues": "https://github.com/RacoonDog/Debug-Utils/issues",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/debug-utils",
     "discord": "https://discord.gg/3GxfGcAJBN"
   },
   "license": "LGPL-2.1",
