@@ -7,10 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -20,7 +17,6 @@ import java.util.Random;
 public class DebugUtils implements ClientModInitializer {
     public static final Logger LOGGER = LogUtils.getLogger();
     private static final GraphHud GRAPH_HUD = new GraphHud();
-    public static boolean graphsEnabled = false;
     public static final List<ModMetricsData> metrics = Lists.newArrayList();
 
     private static final Random RANDOM = new Random();
@@ -30,7 +26,7 @@ public class DebugUtils implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
-            if (graphsEnabled) {
+            if (ConfigHandler.graphsEnabled) {
                 GRAPH_HUD.render(matrixStack);
             }
         });
@@ -48,18 +44,5 @@ public class DebugUtils implements ClientModInitializer {
             }
             ticks++;
         });
-    }
-
-    public static void toggleGraphs() {
-        graphsEnabled = !graphsEnabled;
-        debugMessage("Debug metric graphs: " + (graphsEnabled ? "shown" : "hidden"));
-
-        if (graphsEnabled) {
-            ModMetricsData.getMetrics(metrics);
-        }
-    }
-
-    public static void debugMessage(String message) {
-        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.empty().append(Text.translatable("debug.prefix").formatted(Formatting.YELLOW, Formatting.BOLD)).append(" ").append(message));
     }
 }

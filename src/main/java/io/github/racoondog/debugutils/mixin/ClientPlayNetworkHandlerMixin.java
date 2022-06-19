@@ -1,6 +1,6 @@
 package io.github.racoondog.debugutils.mixin;
 
-import io.github.racoondog.debugutils.DebugUtils;
+import io.github.racoondog.debugutils.ConfigHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ClientPlayNetworkHandlerMixin {
     @Inject(method = "onGameJoin", at = @At("HEAD"))
     private void resetSettings(GameJoinS2CPacket packet, CallbackInfo ci) {
-        DebugUtils.graphsEnabled = false;
-        DebugUtils.metrics.clear();
+        ConfigHandler.resetSettings();
     }
 }

@@ -1,6 +1,6 @@
 package io.github.racoondog.debugutils.mixin;
 
-import io.github.racoondog.debugutils.DebugUtils;
+import io.github.racoondog.debugutils.ConfigHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.hud.SubtitlesHud;
@@ -15,6 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class SubtitlesHudMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     private void graphsHideSubtitles(MatrixStack matrices, CallbackInfo ci) {
-        if (DebugUtils.graphsEnabled) ci.cancel();
+        if (ConfigHandler.graphsEnabled) ci.cancel();
     }
 }
