@@ -1,5 +1,6 @@
 package io.github.racoondog.debugutils;
 
+import com.google.common.collect.Lists;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -20,7 +21,7 @@ public class DebugUtils implements ClientModInitializer {
     public static final Logger LOGGER = LogUtils.getLogger();
     private static final GraphHud GRAPH_HUD = new GraphHud();
     public static boolean graphsEnabled = false;
-    public static List<ModMetricsData> metrics;
+    public static final List<ModMetricsData> metrics = Lists.newArrayList();
 
     private static final Random RANDOM = new Random();
 
@@ -54,7 +55,7 @@ public class DebugUtils implements ClientModInitializer {
         debugMessage("Debug metric graphs: " + (graphsEnabled ? "shown" : "hidden"));
 
         if (graphsEnabled) {
-            metrics = ModMetricsData.getMetrics();
+            ModMetricsData.getMetrics(metrics);
         }
     }
 

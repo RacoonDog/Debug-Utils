@@ -1,6 +1,5 @@
 package io.github.racoondog.debugutils;
 
-import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -18,25 +17,25 @@ public class ModMetricsData {
     public static final ModMetricsData packetsInMetricsData = new ModMetricsData("Packets Received / Second", "pkt/s", 6, 15, 0) {
         @Override
         public int getLineHeight(long value) {
-            if (MinecraftClient.getInstance().getNetworkHandler() == null) return 0;
-            double d = (double)value / (double)(1000000000L / (this.j / (Math.sqrt(MinecraftClient.getInstance().getNetworkHandler().getPlayerList().size()) / 2)));
-            return (int)(d * this.i);
+            if (MinecraftClient.getInstance().getNetworkHandler() == null || value == 0) return 0;
+            int x = (int)Math.sqrt(MinecraftClient.getInstance().getNetworkHandler().getPlayerList().size()) >> 2;
+            return this.getLineHeight(value, x);
         }
     }.color(-16711936);
     public static final ModMetricsData packetsOutMetricsData = new ModMetricsData("Packets Sent / Second", "pkt/s", 40, 100, 0) {
         @Override
         public int getLineHeight(long value) {
-            if (MinecraftClient.getInstance().getNetworkHandler() == null) return 0;
-            double d = (double)value / (double)(1000000000L / (this.j / (Math.sqrt(MinecraftClient.getInstance().getNetworkHandler().getPlayerList().size()) / 2)));
-            return (int)(d * this.i);
+            if (MinecraftClient.getInstance().getNetworkHandler() == null || value == 0) return 0;
+            int x = (int)Math.sqrt(MinecraftClient.getInstance().getNetworkHandler().getPlayerList().size()) >> 2;
+            return this.getLineHeight(value, x);
         }
     }.color(-16711936);
 
     public MetricsData metricsData;
     public final String text;
     public final String unit;
-    public final int i;
-    public final int j;
+    protected final int i;
+    protected final int j;
     public final int red;
     public int staticColor = 0;
 
@@ -54,8 +53,13 @@ public class ModMetricsData {
     }
 
     public int getLineHeight(long value) {
-        double d = (double)value / (double)(1000000000L / this.j);
-        return (int)(d * this.i);
+        return this.getLineHeight(value, this.j);
+    }
+
+    public int getLineHeight(long value, int j) {
+        if (value == 0) return 0;
+        double d = (double)value / (double)(1000000000L / (long)j);
+        return (int)(d * (double)this.i);
     }
 
     public ModMetricsData color(int color) {
@@ -68,8 +72,7 @@ public class ModMetricsData {
         return this;
     }
 
-    public static List<ModMetricsData> getMetrics() {
-        List<ModMetricsData> toReturn = Lists.newArrayList();
+    public static void getMetrics(List<ModMetricsData> toReturn) {
         IntegratedServer integratedServer = MinecraftClient.getInstance().getServer();
 
         toReturn.add(fpsMetricsData);
@@ -80,7 +83,5 @@ public class ModMetricsData {
         } else {
             toReturn.add(ModMetricsData.tpsMetricsData.init(integratedServer::getMetricsData));
         }
-
-        return toReturn;
     }
 }

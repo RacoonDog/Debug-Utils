@@ -35,7 +35,7 @@ public class GraphHud extends DrawableHelper {
         MinecraftClient.getInstance().getProfiler().pop();
     }
 
-    protected void renderGraph(MatrixStack matrixStack, ModMetricsData metricsData, int x, int y, int width) {
+    private void renderGraph(MatrixStack matrixStack, ModMetricsData metricsData, int x, int y, int width) {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
         RenderSystem.disableDepthTest();
@@ -71,7 +71,7 @@ public class GraphHud extends DrawableHelper {
         for(Matrix4f matrix4f = AffineTransformation.identity().getMatrix(); k != currentIndex; k = metricsData.metricsData.wrapIndex(k + 1)) {
             int t = metricsData.getLineHeight(samples[k]);
             int u = metricsData.red;
-            int v = metricsData.staticColor == 0 ? this.getMetricsLineColor(MathHelper.clamp(t, 0, u), 0, u / 2, u) : metricsData.staticColor;
+            int v = metricsData.staticColor == 0 ? this.getMetricsLineColor(MathHelper.clamp(t, 0, u), u >> 2, u) : metricsData.staticColor;
             int a = v >> 24 & 255;
             int r = v >> 16 & 255;
             int g = v >> 8 & 255;
@@ -103,18 +103,15 @@ public class GraphHud extends DrawableHelper {
             String string3 = "" + q + " " + metricsData.unit + " max";
             int textHeight = height - 60 - 9;
 
-            float var10003 = (float)(x + 2);
-            textRenderer.drawWithShadow(matrixStack, string, var10003, textHeight, 14737632);
-            var10003 = (float)(x + n / 2 - textRenderer.getWidth(string2) / 2);
-            textRenderer.drawWithShadow(matrixStack, string2, var10003, textHeight, 14737632);
-            var10003 = (float)(x + n - textRenderer.getWidth(string3));
-            textRenderer.drawWithShadow(matrixStack, string3, var10003, textHeight, 14737632);
+            textRenderer.drawWithShadow(matrixStack, string, x + 2, textHeight, 14737632);
+            textRenderer.drawWithShadow(matrixStack, string2, x + (n - textRenderer.getWidth(string2)) / 2.0f, textHeight, 14737632);
+            textRenderer.drawWithShadow(matrixStack, string3, x + n - textRenderer.getWidth(string3), textHeight, 14737632);
         }
 
         RenderSystem.enableDepthTest();
     }
 
-    private int getMetricsLineColor(int value, int greenValue, int yellowValue, int redValue) {
+    private int getMetricsLineColor(int value, int yellowValue, int redValue) {
         return value < yellowValue ? this.interpolateColor(-16711936, -256, (float)value / (float)yellowValue) : this.interpolateColor(-256, -65536, (float)(value - yellowValue) / (float)(redValue - yellowValue));
     }
 

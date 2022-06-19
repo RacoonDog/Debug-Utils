@@ -16,6 +16,6 @@ public abstract class ClientPlayNetworkHandlerMixin {
     @Inject(method = "onGameJoin", at = @At("HEAD"))
     private void resetSettings(GameJoinS2CPacket packet, CallbackInfo ci) {
         DebugUtils.graphsEnabled = false;
-        DebugUtils.metrics = null;
+        DebugUtils.metrics.clear();
     }
 }
